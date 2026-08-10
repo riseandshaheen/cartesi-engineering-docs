@@ -1,6 +1,6 @@
-# Cartesi Engineering Map
+# Cartesi Github Org
 
-[Cartesi](https://cartesi.io) is a Linux-capable execution environment for blockchain applications. Computation runs off-chain inside a deterministic RISC-V virtual machine (the **Cartesi Machine**); results can be verified on-chain through interactive fraud proofs or related settlement modules.
+[Cartesi](https://cartesi.io) is a Linux-capable execution environment for blockchain applications. Computation runs off-chain inside a deterministic RISC-V virtual machine (the **Cartesi Machine**).
 
 This document maps the public repositories under [`github.com/cartesi`](https://github.com/cartesi), how they relate, and what is current versus legacy. It is oriented around the **Rollups v2** engineering stack that is under active integration as of mid-2026.
 
