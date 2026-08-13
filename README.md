@@ -9,58 +9,7 @@ This document maps the public repositories under [`github.com/cartesi`](https://
 
 The Rollups stack is versioned as a dependency chain. Changes propagate in a fixed order: machine → contracts / fraud proofs → node → TypeScript / explorer / CLI → templates.
 
-```mermaid
-%%{init: {"theme":"neutral","flowchart":{"curve":"basis","padding":16,"nodeSpacing":28,"rankSpacing":40}}}%%
-flowchart LR
-  subgraph machine ["Cartesi Machine"]
-    direction TB
-    GT[machine-guest-tools]
-    IMG[linux / machine-linux-image / machine-rootfs-image]
-    EM([machine-emulator])
-    SS([machine-solidity-step])
-    GT --> EM
-    IMG --> EM
-    EM --> SS
-  end
-
-  subgraph contracts ["Contracts & fraud proofs"]
-    direction TB
-    RC([rollups-contracts])
-    DV([dave])
-    RC --> DV
-  end
-
-  subgraph node ["Node and sequencer"]
-    direction TB
-    RN([rollups-node])
-    SQ([sequencer])
-  end
-
-  subgraph tooling ["Docs and tooling"]
-    direction TB
-    CLI([cli])
-    TPL[application-templates]
-    TS[rollups-ts]
-    EXP[rollups-explorer]
-    DOC[docs]
-    CLI --> TPL
-    TS --> EXP
-  end
-
-  SS --> DV
-  EM --> RN
-  EM -.-> SQ
-  RC --> RN
-  RN --> CLI
-  RN --> TS
-  DV -.-> CLI
-
-  classDef core fill:#00F6FF,stroke:#008DA5,stroke-width:1.5px,color:#000
-  classDef support fill:#008DA5,stroke:#006d80,stroke-width:1px,color:#fff
-
-  class EM,SS,RC,DV,RN,SQ,CLI core
-  class GT,IMG,TPL,TS,EXP,DOC support
-```
+![Cartesi Rollups v2 engineering stack](./engineering-stack-white.png)
 
 **How the pieces fit**
 
@@ -92,6 +41,11 @@ flowchart LR
 | --- | --- | --- |
 | [rollups-contracts](https://github.com/cartesi/rollups-contracts) | Rollups smart contracts: InputBox, Application, portals, Authority/Quorum, claim staging, emergency withdrawal. Deployed as a public good on major EVM chains. | **Production** (v2 line) / **active development** (v3 alphas) |
 | [dave](https://github.com/cartesi/dave) | Permissionless fraud-proof suite (PRT algorithm; Dave algorithm research/next). Contracts + Rust/Lua nodes. Versioned with rollups-contracts. | **Active development** (experimental / alpha) |
+
+### Application
+
+| Repository | Purpose | Status |
+| --- | --- | --- |
 | [honeypot](https://github.com/cartesi/honeypot) | Hardened ERC-20 vault DApp used as a security reference on Cartesi Rollups. | **Production** (reference application) |
 
 ### Node and sequencer
