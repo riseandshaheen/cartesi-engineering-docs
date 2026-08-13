@@ -4,16 +4,6 @@
 
 This document maps the public repositories under [`github.com/cartesi`](https://github.com/cartesi). It is oriented around the **Rollups v2** engineering stack that is under active integration as of mid-2026.
 
-**Status legend**
-
-| Status | Meaning |
-| --- | --- |
-| **Production** | Released and used in live or supported deployments; still maintained. |
-| **Active development** | Primary engineering focus; APIs and releases may still be alpha. |
-| **Legacy** | Not archived, but superseded or dormant; prefer the successor. |
-| **Archived** | Frozen on GitHub; historical reference only. |
-
----
 
 ## Current engineering stack
 
@@ -66,14 +56,12 @@ flowchart TB
 
 **How the pieces fit**
 
-1. **Cartesi Machine** — deterministic RISC-V + Linux execution (`machine-emulator`), with an on-chain micro-architecture step verifier (`machine-solidity-step`) and guest-side tooling / rootfs (`machine-guest-tools`, Linux image repos).
-2. **Rollups contracts** — L1 data availability (`InputBox`), application settlement, portals, Authority / Quorum consensus, and emergency-withdrawal primitives (`rollups-contracts`).
-3. **Fraud proofs** — permissionless dispute system (`dave`, PRT today; Dave algorithm next), coupled tightly to contracts and the machine step.
-4. **Node** — middleware between L1 contracts, the machine, and clients (`rollups-node`): advance/inspect, claims, GraphQL / JSON-RPC surfaces.
-5. **Sequencer** — optional low-latency soft-confirmation path (`sequencer`); shares the emulator and is converging on node deployment conventions, not yet a required dependency of the SDK release train.
-6. **Developer tools** — CLI/SDK, templates, TypeScript clients, explorer, and documentation.
-
-Pinned entry points on the org: [machine-emulator](https://github.com/cartesi/machine-emulator), [rollups-node](https://github.com/cartesi/rollups-node), [rollups-contracts](https://github.com/cartesi/rollups-contracts), [machine-guest-tools](https://github.com/cartesi/machine-guest-tools), [dave](https://github.com/cartesi/dave), [cli](https://github.com/cartesi/cli).
+1. **Cartesi Machine** — deterministic RISC-V + Linux execution ([`machine-emulator`](https://github.com/cartesi/machine-emulator)), with an on-chain micro-architecture step verifier ([`machine-solidity-step`](https://github.com/cartesi/machine-solidity-step)) and guest-side tooling / rootfs ([`machine-guest-tools`](https://github.com/cartesi/machine-guest-tools), Linux image repos).
+2. **Rollups contracts** — L1 data availability (`InputBox`), application settlement, portals, Authority / Quorum consensus, and emergency-withdrawal primitives ([`rollups-contracts`](https://github.com/cartesi/rollups-contracts)).
+3. **Fraud proofs** — permissionless dispute system ([`dave`](https://github.com/cartesi/dave), PRT today; Dave algorithm next), coupled tightly to contracts and the machine step.
+4. **Node** — middleware between L1 contracts, the machine, and clients ([`rollups-node`](https://github.com/cartesi/rollups-node)): advance/inspect, claims, GraphQL / JSON-RPC surfaces.
+5. **Sequencer** — optional low-latency soft-confirmation path ([`sequencer`](https://github.com/cartesi/sequencer)); shares the emulator and is converging on node deployment conventions, not yet a required dependency of the SDK release train.
+6. **Developer tools** — [`CLI`](https://github.com/cartesi/cli), templates, TypeScript clients, explorer, and documentation.
 
 ---
 
@@ -89,13 +77,6 @@ Pinned entry points on the org: [machine-emulator](https://github.com/cartesi/ma
 | [linux](https://github.com/cartesi/linux) | Cartesi-patched Linux kernel sources. | **Production** |
 | [machine-linux-image](https://github.com/cartesi/machine-linux-image) | Build pipeline for the kernel image. | **Production** |
 | [machine-rootfs-image](https://github.com/cartesi/machine-rootfs-image) | Build pipeline for the root filesystem image. | **Production** |
-| [machine-emulator-sdk](https://github.com/cartesi/machine-emulator-sdk) | Packaging / SDK conveniences around the emulator. | **Legacy** (prefer emulator releases + guest-tools / CLI SDK) |
-| [machine-emulator-rom](https://github.com/cartesi/machine-emulator-rom) | Machine ROM. | **Legacy** |
-| [machine-tests](https://github.com/cartesi/machine-tests) | Low-level machine test fixtures. | **Legacy** |
-| [machine-emulator-defines](https://github.com/cartesi/machine-emulator-defines) | Shared C defines for the emulator. | **Legacy** |
-| [image-toolchain](https://github.com/cartesi/image-toolchain) | RISC-V toolchain container image. | **Legacy** |
-| [openapi-interfaces](https://github.com/cartesi/openapi-interfaces) | Shared OpenAPI HTTP interface specs. | **Legacy** / supporting |
-| [grpc-interfaces](https://github.com/cartesi/grpc-interfaces) | Historical gRPC interface definitions. | **Legacy** → superseded by JSON-RPC / node APIs |
 | [homebrew-tap](https://github.com/cartesi/homebrew-tap) | Homebrew distribution for Cartesi packages. | **Production** |
 | [linux-packages](https://github.com/cartesi/linux-packages) | Linux package repository. | **Production** |
 | [macports-ports](https://github.com/cartesi/macports-ports) | MacPorts packaging. | **Production** |
@@ -116,7 +97,6 @@ Pinned entry points on the org: [machine-emulator](https://github.com/cartesi/ma
 | --- | --- | --- |
 | [rollups-node](https://github.com/cartesi/rollups-node) | Reference Rollups node: L1 reader, machine runner, claims, GraphQL / inspect / JSON-RPC. Integration pivot for the SDK. | **Active development** (v2 alphas toward stable) |
 | [sequencer](https://github.com/cartesi/sequencer) | Deterministic sequencer with soft confirmations, batch submission, recovery, and watchdog. | **Active development** (prototype / alpha; testnet deployment in progress) |
-| [rollups-graphql](https://github.com/cartesi/rollups-graphql) | Standalone GraphQL convenience / voucher-management service. | **Legacy** / optional (node ships its own GraphQL) |
 | [helm-charts](https://github.com/cartesi/helm-charts) | Kubernetes Helm charts for deploying Cartesi services. | **Active development** |
 | [setup-action](https://github.com/cartesi/setup-action) | GitHub Action to set up Cartesi tooling in CI. | **Active development** |
 
@@ -151,8 +131,6 @@ Distinct from application Rollups: Cartesi token staking / PoS node software and
 | --- | --- | --- |
 | [zk-benchmarks](https://github.com/cartesi/zk-benchmarks) | ZK proving benchmarks related to machine steps. | **Active development** (research) |
 | [experiments](https://github.com/cartesi/experiments) | DApp showcase experiments. | **Active development** |
-| [creepts-*](https://github.com/cartesi?q=creepts) | Historical Creepts game demos. | **Legacy** |
-| [cips](https://github.com/cartesi/cips) | Cartesi Improvement Proposals process. | **Legacy** / process |
 
 ---
 
