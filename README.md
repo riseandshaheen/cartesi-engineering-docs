@@ -2,7 +2,7 @@
 
 [Cartesi](https://cartesi.io) is a Linux-capable execution environment for blockchain applications. Computation runs off-chain inside a deterministic RISC-V virtual machine (the **Cartesi Machine**).
 
-This document maps the public repositories under [`github.com/cartesi`](https://github.com/cartesi), how they relate, and what is current versus legacy. It is oriented around the **Rollups v2** engineering stack that is under active integration as of mid-2026.
+This document maps the public repositories under [`github.com/cartesi`](https://github.com/cartesi). It is oriented around the **Rollups v2** engineering stack that is under active integration as of mid-2026.
 
 **Status legend**
 
@@ -153,50 +153,6 @@ Distinct from application Rollups: Cartesi token staking / PoS node software and
 | [experiments](https://github.com/cartesi/experiments) | DApp showcase experiments. | **Active development** |
 | [creepts-*](https://github.com/cartesi?q=creepts) | Historical Creepts game demos. | **Legacy** |
 | [cips](https://github.com/cartesi/cips) | Cartesi Improvement Proposals process. | **Legacy** / process |
-
-### Set aside (discontinued directions)
-
-As focus narrowed to DeFi, these directions were discontinued. Code remains open source; treat as **Legacy** / historical unless noted otherwise. See the [Technical Evolution Plan](https://cartesi.io/technical-evolution-plan/).
-
-| Direction | Repositories |
-| --- | --- |
-| EigenLayer coprocessor | [coprocessor](https://github.com/cartesi/coprocessor), [coprocessor-solver](https://github.com/cartesi/coprocessor-solver), [coprocessor-operator](https://github.com/cartesi/coprocessor-operator), [coprocessor-advance-runner](https://github.com/cartesi/coprocessor-advance-runner), [coprocessor-evm-call](https://github.com/cartesi/coprocessor-evm-call), [coprocessor-infra](https://github.com/cartesi/coprocessor-infra); related archived work under [zippiehq](https://github.com/zippiehq?q=cartesi-coprocessor) |
-| Lambada | [zippiehq/cartesi-lambada](https://github.com/zippiehq/cartesi-lambada) (**Archived**) and related `cartesi-lambada-*` repos under zippiehq |
-| Alternative data availability | [rollups-espresso-reader](https://github.com/cartesi/rollups-espresso-reader), [ipfs-service](https://github.com/cartesi/ipfs-service) |
-| Sequencer integrations (pre-current path) | [paio](https://github.com/cartesi/paio) |
-| ENS resolution | Removed from [rollups-contracts](https://github.com/cartesi/rollups-contracts) (ENS Portal / related contracts) |
-| Bitcoin execution | Set aside; no active `cartesi/*` successor |
-| Browser-based rollups | Set aside; no active `cartesi/*` successor |
-
----
-
-## Legacy → successor
-
-Prefer the right-hand repository for new work.
-
-| Legacy / archived | Successor | Notes |
-| --- | --- | --- |
-| [rollups](https://github.com/cartesi/rollups) (**Archived**) | [rollups-node](https://github.com/cartesi/rollups-node) + [rollups-contracts](https://github.com/cartesi/rollups-contracts) | Monorepo split; documented in the archived README. |
-| [rollups-examples](https://github.com/cartesi/rollups-examples) (**Archived**) | [application-templates](https://github.com/cartesi/application-templates) | Templates now driven by the CLI. |
-| [sunodo-examples](https://github.com/cartesi/sunodo-examples) (**Legacy**) | [application-templates](https://github.com/cartesi/application-templates) + [cli](https://github.com/cartesi/cli) | Sunodo was rebranded / folded into Cartesi CLI. |
-| [server-manager](https://github.com/cartesi/server-manager) (**Archived**) | [rollups-node](https://github.com/cartesi/rollups-node) | Former machine↔node gRPC bridge; node owns the path now. |
-| [host-server-manager](https://github.com/cartesi/host-server-manager) (**Archived**) | Host/dev workflows via [cli](https://github.com/cartesi/cli) SDK / local run | Host-mode substitute for server-manager. |
-| [machine-json-rpc](https://github.com/cartesi/machine-json-rpc) (**Archived**) | [machine-emulator](https://github.com/cartesi/machine-emulator) JSON-RPC API | Bindings folded into the emulator. |
-| [arbitration-dlib](https://github.com/cartesi/arbitration-dlib) (**Archived**) | [dave](https://github.com/cartesi/dave) | Early dispute stack. |
-| [tournament-dlib](https://github.com/cartesi/tournament-dlib) (**Archived**) | [dave](https://github.com/cartesi/dave) (PRT) | Tournament dispute primitive → PRT / Dave. |
-| [logger-dlib](https://github.com/cartesi/logger-dlib) (**Archived**) | [rollups-contracts](https://github.com/cartesi/rollups-contracts) InputBox / DA | On-chain logger era. |
-| [tree-dlib](https://github.com/cartesi/tree-dlib) (**Archived**) | Emulator / contracts Merkle machinery | Historical Merkle library. |
-| [compute](https://github.com/cartesi/compute) / [compute-tutorials](https://github.com/cartesi/compute-tutorials) (**Legacy**) | Rollups + [dave](https://github.com/cartesi/dave) | Former Cartesi Compute / Descartes SDK. |
-| [dispatcher](https://github.com/cartesi/dispatcher), [machine-manager](https://github.com/cartesi/machine-manager), [tx-manager](https://github.com/cartesi/tx-manager), [state-fold](https://github.com/cartesi/state-fold), [offchain-utils](https://github.com/cartesi/offchain-utils) (**Legacy**) | [rollups-node](https://github.com/cartesi/rollups-node) | Pre-node off-chain microservices. |
-| [DevGuide](https://github.com/cartesi/DevGuide) (**Archived**) | [docs](https://github.com/cartesi/docs) | Old developer guide. |
-| [demo](https://github.com/cartesi/demo) (**Archived**) | [honeypot](https://github.com/cartesi/honeypot) / [application-templates](https://github.com/cartesi/application-templates) | Early project demo. |
-| [paio](https://github.com/cartesi/paio) (**Legacy**) | [sequencer](https://github.com/cartesi/sequencer) | Earlier sequencer-integration work; current path is `sequencer`. |
-| [coprocessor*](https://github.com/cartesi?q=coprocessor) (**Legacy**) | — | EigenLayer coprocessor track; set aside. |
-| [rollups-espresso-reader](https://github.com/cartesi/rollups-espresso-reader), [ipfs-service](https://github.com/cartesi/ipfs-service) (**Legacy**) | — | Alternative DA integrations; set aside. |
-| [grpc-interfaces](https://github.com/cartesi/grpc-interfaces) (**Legacy**) | Emulator JSON-RPC + node HTTP APIs | gRPC era interfaces. |
-| [image-hardhat](https://github.com/cartesi/image-hardhat) (**Archived**) | Foundry / CLI devnet | Old Hardhat node image. |
-
-Other **Archived** repos (`playground`, forks kept for history, etc.) should be treated as reference-only unless a successor is listed above.
 
 ---
 
