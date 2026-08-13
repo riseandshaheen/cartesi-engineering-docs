@@ -296,7 +296,24 @@ The threat model classifies the pool as semi-trusted L1 state and documents what
 
 ## Security Posture and Audits
 
-Security work within this quarter took these forms:
+Cartesi operates a continuous, in-house security and hardening program. Rather than relying solely on point-in-time external audits, our engineering organization runs independent, adversarial review of the protocol as it evolves, so that security scales with the codebase instead of trailing behind it. This is a high-level summary for stakeholders; technical detail is handled privately with the engineering team under responsible-disclosure practice.
+
+**Scope this quarter.** We conducted multi-pass, independent reviews spanning three successive release candidates of the rollups node (`v2.0.0-alpha.10`, `alpha.11`, and `alpha.12`), together with their corresponding smart-contract releases (`rollups-contracts`, through `v3.0.0-alpha.6`) and CLI releases (`@cartesi/cli`, through `2.0.0-alpha.35`), under the production trust model (Authority, single-operator). Coverage included the input pipeline, execution and determinism, the claim and settlement lifecycle, emergency-withdrawal, asset portals, node availability, the public query API, the data layer, and developer tooling. Multiple reviewers worked in parallel and clean-room to cross-validate results.
+
+**Representative outcomes.** A focused set of findings was surfaced and reported privately to engineering, each triaged by severity. These include, but are not limited to:
+
+- Input-ingestion robustness under a specific transaction pattern.
+- Asset-portal accounting with non-standard token behavior.
+- An early-lifecycle settlement edge case.
+- Execution determinism under host-level timing conditions.
+
+All of these findings have since been remediated. Turnaround from report to fix was often measured in days.
+
+**What held up.** The protocol's foundational guarantees were independently re-verified and confirmed to hold, including the integrity of output proofs between the execution and settlement layers and the emergency-withdrawal and anti-replay controls in the contracts. Several suspected weaknesses were investigated and found not to be platform defects; in one case the platform's own safeguard correctly rejected a malformed state, exactly as designed.
+
+**Beyond security.** Reviews also produced developer-experience and reliability improvements (tooling ergonomics, network and RPC-provider compatibility) and new hardening documentation for node operators, feeding directly back into the product.
+
+Alongside that review cycle, security engineering in the codebase took these complementary forms:
 
 - **Formal verification.** TLA+ specifications for the sequencer's optimistic and preemptive recovery models, with a documented threat model and explicit invariants.
 - **Fuzzing.** A fuzzer harness was added to the emulator and the defects it surfaced were fixed.
@@ -305,10 +322,6 @@ Security work within this quarter took these forms:
 - **Trust-model documentation.** The sequencer documents its own limitations — censorship capability, the bounded window in which soft confirmations can be built on diverged state, and the operator-trusted inputs to cockroach recovery — rather than only its guarantees.
 
 An external audit of the contracts and sequencer remains an open prerequisite for a stable mainnet designation.
-
-### Internal testing rounds
-
-Internal testing rounds were conducted across the stack during the quarter. [#todo - add testing with AI agents devad contribution]
 
 ---
 
@@ -480,7 +493,7 @@ Automated release-versioning pull requests (`Version Packages (alpha)`) in `cli`
 
 ---
 
-## Appendix C — Q2 2026 releases (by product)
+## Appendix C — Q2 2026 releases
 
 ### Cartesi Machine (emulator, solidity step, guest tools)
 
