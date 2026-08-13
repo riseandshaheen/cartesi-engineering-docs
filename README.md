@@ -10,48 +10,56 @@ This document maps the public repositories under [`github.com/cartesi`](https://
 The Rollups stack is versioned as a dependency chain. Changes propagate in a fixed order: machine → contracts / fraud proofs → node → TypeScript / explorer / CLI → templates.
 
 ```mermaid
-flowchart TB
-  subgraph foundation ["Foundation — Cartesi Machine"]
+%%{init: {"theme":"neutral","flowchart":{"curve":"basis","padding":16,"nodeSpacing":28,"rankSpacing":40}}}%%
+flowchart LR
+  subgraph machine ["Cartesi Machine"]
+    direction TB
     GT[machine-guest-tools]
-    LIN[linux / machine-linux-image / machine-rootfs-image]
-    EM[machine-emulator]
-    SS[machine-solidity-step]
+    IMG[linux / machine-linux-image / machine-rootfs-image]
+    EM([machine-emulator])
+    SS([machine-solidity-step])
     GT --> EM
-    LIN --> EM
+    IMG --> EM
     EM --> SS
   end
 
-  subgraph settlement ["Settlement & fraud proofs"]
-    RC[rollups-contracts]
-    DV[dave]
-    SS --> DV
-    EM --> DV
+  subgraph contracts ["Contracts & fraud proofs"]
+    direction TB
+    RC([rollups-contracts])
+    DV([dave])
     RC --> DV
   end
 
-  subgraph runtime ["Runtime"]
-    RN[rollups-node]
-    SQ[sequencer]
-    EM --> RN
-    EM --> SQ
-    RC --> RN
+  subgraph node ["Node and sequencer"]
+    direction TB
+    RN([rollups-node])
+    SQ([sequencer])
   end
 
-  subgraph developer ["Developer surface"]
-    TS[rollups-ts]
-    CLI[cli + SDK]
+  subgraph tooling ["Docs and tooling"]
+    direction TB
+    CLI([cli])
     TPL[application-templates]
+    TS[rollups-ts]
     EXP[rollups-explorer]
-    API[rollups-explorer-api]
     DOC[docs]
-    RN --> CLI
-    RN --> TS
-    RN --> API
-    DV --> CLI
-    TS --> EXP
-    API --> EXP
     CLI --> TPL
+    TS --> EXP
   end
+
+  SS --> DV
+  EM --> RN
+  EM -.-> SQ
+  RC --> RN
+  RN --> CLI
+  RN --> TS
+  DV -.-> CLI
+
+  classDef core fill:#00F6FF,stroke:#008DA5,stroke-width:1.5px,color:#000
+  classDef support fill:#008DA5,stroke:#006d80,stroke-width:1px,color:#fff
+
+  class EM,SS,RC,DV,RN,SQ,CLI core
+  class GT,IMG,TPL,TS,EXP,DOC support
 ```
 
 **How the pieces fit**
@@ -61,13 +69,13 @@ flowchart TB
 3. **Fraud proofs** — permissionless dispute system ([`dave`](https://github.com/cartesi/dave), PRT today; Dave algorithm next), coupled tightly to contracts and the machine step.
 4. **Node** — middleware between L1 contracts, the machine, and clients ([`rollups-node`](https://github.com/cartesi/rollups-node)): advance/inspect, claims, GraphQL / JSON-RPC surfaces.
 5. **Sequencer** — optional low-latency soft-confirmation path ([`sequencer`](https://github.com/cartesi/sequencer)); shares the emulator and is converging on node deployment conventions, not yet a required dependency of the SDK release train.
-6. **Developer tools** — [`CLI`](https://github.com/cartesi/cli), templates, TypeScript clients, explorer, and documentation.
+6. **Docs and tooling** — [`CLI`](https://github.com/cartesi/cli), templates, TypeScript clients, explorer, and documentation.
 
 ---
 
 ## Repository map
 
-### Foundation — Cartesi Machine
+### Cartesi Machine
 
 | Repository | Purpose | Status |
 | --- | --- | --- |
@@ -77,30 +85,23 @@ flowchart TB
 | [linux](https://github.com/cartesi/linux) | Cartesi-patched Linux kernel sources. | **Production** |
 | [machine-linux-image](https://github.com/cartesi/machine-linux-image) | Build pipeline for the kernel image. | **Production** |
 | [machine-rootfs-image](https://github.com/cartesi/machine-rootfs-image) | Build pipeline for the root filesystem image. | **Production** |
-| [homebrew-tap](https://github.com/cartesi/homebrew-tap) | Homebrew distribution for Cartesi packages. | **Production** |
-| [linux-packages](https://github.com/cartesi/linux-packages) | Linux package repository. | **Production** |
-| [macports-ports](https://github.com/cartesi/macports-ports) | MacPorts packaging. | **Production** |
 
-### Settlement, consensus, and fraud proofs
+### Rollups Contracts and Fraud proof system
 
 | Repository | Purpose | Status |
 | --- | --- | --- |
 | [rollups-contracts](https://github.com/cartesi/rollups-contracts) | Rollups smart contracts: InputBox, Application, portals, Authority/Quorum, claim staging, emergency withdrawal. Deployed as a public good on major EVM chains. | **Production** (v2 line) / **active development** (v3 alphas) |
 | [dave](https://github.com/cartesi/dave) | Permissionless fraud-proof suite (PRT algorithm; Dave algorithm research/next). Contracts + Rust/Lua nodes. Versioned with rollups-contracts. | **Active development** (experimental / alpha) |
-| [dave-monitoring](https://github.com/cartesi/dave-monitoring) | Monitoring for Dave smart contracts. | **Active development** |
-| [solidity-util](https://github.com/cartesi/solidity-util) | Shared Solidity utility contracts. | **Production** / supporting |
 | [honeypot](https://github.com/cartesi/honeypot) | Hardened ERC-20 vault DApp used as a security reference on Cartesi Rollups. | **Production** (reference application) |
 
-### Runtime — node and sequencing
+### Node and sequencer
 
 | Repository | Purpose | Status |
 | --- | --- | --- |
 | [rollups-node](https://github.com/cartesi/rollups-node) | Reference Rollups node: L1 reader, machine runner, claims, GraphQL / inspect / JSON-RPC. Integration pivot for the SDK. | **Active development** (v2 alphas toward stable) |
 | [sequencer](https://github.com/cartesi/sequencer) | Deterministic sequencer with soft confirmations, batch submission, recovery, and watchdog. | **Active development** (prototype / alpha; testnet deployment in progress) |
-| [helm-charts](https://github.com/cartesi/helm-charts) | Kubernetes Helm charts for deploying Cartesi services. | **Active development** |
-| [setup-action](https://github.com/cartesi/setup-action) | GitHub Action to set up Cartesi tooling in CI. | **Active development** |
 
-### Developer surface
+### Docs and tooling
 
 | Repository | Purpose | Status |
 | --- | --- | --- |
@@ -110,8 +111,6 @@ flowchart TB
 | [rollups-explorer](https://github.com/cartesi/rollups-explorer) | Rollups application explorer UI. | **Active development** |
 | [rollups-explorer-api](https://github.com/cartesi/rollups-explorer-api) | Indexer / API behind the Rollups explorer. | **Active development** |
 | [docs](https://github.com/cartesi/docs) | Official documentation (Docusaurus), including machine-readable / LLM-oriented delivery. | **Production** / **active development** |
-| [erc-4337-devnet](https://github.com/cartesi/erc-4337-devnet) | Local ERC-4337 development environment used with AA / paymaster flows. | **Active development** |
-| [passkey-server](https://github.com/cartesi/passkey-server) | Passkey server for ZeroDev Kernel integrations. | **Active development** |
 
 ### CTSI staking and chain explorer (PoS)
 
@@ -125,43 +124,10 @@ Distinct from application Rollups: Cartesi token staking / PoS node software and
 | [explorer](https://github.com/cartesi/explorer) | Cartesi blockchain / staking explorer. | **Production** / maintenance |
 | [subgraph](https://github.com/cartesi/subgraph) | The Graph subgraph definitions. | **Production** / maintenance |
 
-### Research, demos, and misc
-
-| Repository | Purpose | Status |
-| --- | --- | --- |
-| [zk-benchmarks](https://github.com/cartesi/zk-benchmarks) | ZK proving benchmarks related to machine steps. | **Active development** (research) |
-| [experiments](https://github.com/cartesi/experiments) | DApp showcase experiments. | **Active development** |
-
----
-
-## Where to start
-
-| Goal | Start here |
-| --- | --- |
-| Understand the product | [docs.cartesi.io](https://docs.cartesi.io) → [docs](https://github.com/cartesi/docs) |
-| Build an application | [cli](https://github.com/cartesi/cli) + [application-templates](https://github.com/cartesi/application-templates) |
-| Run / operate a rollup | [rollups-node](https://github.com/cartesi/rollups-node) + [rollups-contracts](https://github.com/cartesi/rollups-contracts) |
-| Soft confirmations / latency | [sequencer](https://github.com/cartesi/sequencer) |
-| Fraud proofs / disputes | [dave](https://github.com/cartesi/dave) |
-| Machine internals | [machine-emulator](https://github.com/cartesi/machine-emulator) + [machine-solidity-step](https://github.com/cartesi/machine-solidity-step) |
-| Frontend integration | [rollups-ts](https://github.com/cartesi/rollups-ts) + [rollups-explorer](https://github.com/cartesi/rollups-explorer) |
-
----
-
-## Related work outside `cartesi/*`
-
-These appear in local engineering checkouts and the Q2 2026 technical report; they are part of the developer/agent surface but are not all under the `cartesi` GitHub org:
-
-| Project | Role |
-| --- | --- |
-| **cartesi-skills** | Curated skill packs for AI coding agents (scaffold, backend, contracts, deploy, debug). |
-| **MCP-Server** (+ admin frontend/server) | Model Context Protocol knowledge server exposing curated docs, articles, and skills to agents. |
-| **Mugen-Builders** demos | Example DeFi / data apps (Uniswap vault, Pandas, markets, etc.) illustrating Linux-on-rollup workloads. |
-
 ---
 
 ## Notes on versioning
 
-As of mid-2026, the Rollups **v2** line is shipping coordinated **alphas** (node, contracts, Dave/PRT, CLI/SDK, explorer, TypeScript clients). Foundation packages (emulator, solidity step, guest tools) publish production releases that the alpha line pins. Treat “production” above as *in production use or release-quality*, and “active development” as *still converging on a stable SDK designation* — especially for contracts that custody funds and for the sequencer before live testnet soak.
+As of mid-2026, the Rollups **v2** line is shipping coordinated **alphas** (node, contracts, Dave/PRT, CLI/SDK, explorer, TypeScript clients). Cartesi Machine packages (emulator, solidity step, guest tools) publish production releases that the alpha line pins. Treat “production” above as *in production use or release-quality*, and “active development” as *still converging on a stable SDK designation* — especially for contracts that custody funds and for the sequencer before live testnet soak.
 
 For the dependency order used in integration releases, see the stack diagram above: **emulator → contracts / dave → node → rollups-ts / explorer / CLI → templates**.
