@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="278" viewBox="0 0 1100 278" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="248" viewBox="0 0 1100 248" role="img" aria-labelledby="title desc">
   <title id="title">Cartesi engineering stack</title>
   <desc id="desc">Horizontal dependency flow from Cartesi Machine through contracts and fraud proofs, node and sequencer, to docs and tooling. Application sits under contracts.</desc>
 
   <defs>
     <clipPath id="frame">
-      <rect width="1100" height="278" rx="12"/>
+      <rect width="1100" height="248" rx="12"/>
     </clipPath>
     <filter id="softShadow" x="-4%" y="-4%" width="108%" height="112%">
       <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#008DA5" flood-opacity="0.1"/>
@@ -15,7 +15,7 @@
   </defs>
 
   <g clip-path="url(#frame)">
-    <rect width="1100" height="278" fill="#ffffff"/>
+    <rect width="1100" height="248" fill="#ffffff"/>
   </g>
 
   <!-- Legend -->
@@ -26,7 +26,7 @@
 
   <!-- Col 1 Machine -->
   <g filter="url(#softShadow)">
-    <rect x="16" y="28" width="248" height="236" rx="12" fill="#ffffff" stroke="#008DA5" stroke-width="1.5"/>
+    <rect x="16" y="28" width="248" height="204" rx="12" fill="#ffffff" stroke="#008DA5" stroke-width="1.5"/>
   </g>
   <text x="30" y="50" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#008DA5" letter-spacing="0.04em">CARTESI MACHINE</text>
 
@@ -42,17 +42,13 @@
     <rect x="30" y="132" width="220" height="26" rx="13" fill="#008DA5"/>
     <text x="140" y="150" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">machine-guest-tools</text>
   </a>
-  <a href="https://github.com/cartesi/linux">
-    <rect x="30" y="164" width="220" height="26" rx="13" fill="#008DA5"/>
-    <text x="140" y="182" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">linux</text>
-  </a>
   <a href="https://github.com/cartesi/machine-linux-image">
-    <rect x="30" y="196" width="220" height="26" rx="13" fill="#008DA5"/>
-    <text x="140" y="214" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">machine-linux-image</text>
+    <rect x="30" y="164" width="220" height="26" rx="13" fill="#008DA5"/>
+    <text x="140" y="182" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">machine-linux-image</text>
   </a>
   <a href="https://github.com/cartesi/machine-rootfs-image">
-    <rect x="30" y="228" width="220" height="26" rx="13" fill="#008DA5"/>
-    <text x="140" y="246" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">machine-rootfs-image</text>
+    <rect x="30" y="196" width="220" height="26" rx="13" fill="#008DA5"/>
+    <text x="140" y="214" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">machine-rootfs-image</text>
   </a>
 
   <line x1="274" y1="100" x2="294" y2="100" stroke="#008DA5" stroke-width="2" marker-end="url(#arrow)"/>
@@ -73,7 +69,7 @@
   </a>
 
   <g filter="url(#softShadow)">
-    <rect x="306" y="152" width="248" height="78" rx="12" fill="#ffffff" stroke="#008DA5" stroke-width="1.5"/>
+    <rect x="306" y="152" width="248" height="80" rx="12" fill="#ffffff" stroke="#008DA5" stroke-width="1.5"/>
   </g>
   <text x="320" y="174" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#008DA5" letter-spacing="0.04em">APPLICATION</text>
 
