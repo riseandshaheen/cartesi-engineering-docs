@@ -1,126 +1,129 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="248" viewBox="0 0 1100 248" role="img" aria-labelledby="title desc">
-  <title id="title">Cartesi engineering stack</title>
-  <desc id="desc">Horizontal dependency flow from Cartesi Machine through contracts and fraud proofs, node and sequencer, to docs and tooling. Application sits under contracts.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="550" viewBox="0 0 1100 550" role="img" aria-labelledby="title desc">
+  <title id="title">Cartesi engineering stack - core protocol and tools</title>
+  <desc id="desc">Core Protocol repositories appear in a teal panel and Tools and Resources repositories appear in a cyan panel. Each repository name links to GitHub.</desc>
 
   <defs>
-    <clipPath id="frame">
-      <rect width="1100" height="248" rx="12"/>
-    </clipPath>
-    <filter id="softShadow" x="-4%" y="-4%" width="108%" height="112%">
-      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#008DA5" flood-opacity="0.1"/>
+    <linearGradient id="coreCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07899D"/>
+      <stop offset="1" stop-color="#05798C"/>
+    </linearGradient>
+    <linearGradient id="toolCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00BFD2"/>
+      <stop offset="1" stop-color="#00DCE8"/>
+    </linearGradient>
+    <linearGradient id="coreIcon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#096D80"/>
+      <stop offset="1" stop-color="#008DA5"/>
+    </linearGradient>
+    <linearGradient id="toolIcon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00B8CE"/>
+      <stop offset="1" stop-color="#00D8E8"/>
+    </linearGradient>
+    <filter id="panelShadow" x="-5%" y="-5%" width="110%" height="114%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#194B55" flood-opacity="0.11"/>
     </filter>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#008DA5"/>
-    </marker>
+    <filter id="cardShadow" x="-5%" y="-10%" width="110%" height="125%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#006F80" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .panel-title {
+        font: 700 28px Inter, Helvetica, Arial, sans-serif;
+        fill: #123E50;
+        letter-spacing: .025em;
+      }
+      .repo {
+        font: 600 14px Inter, Helvetica, Arial, sans-serif;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      .core-repo { fill: #fff; }
+      .tool-repo { fill: #062F38; }
+      .divider { fill: none; stroke-width: 2; }
+    </style>
   </defs>
 
-  <g clip-path="url(#frame)">
-    <rect width="1100" height="248" fill="#ffffff"/>
+  <rect width="1100" height="550" fill="#fff"/>
+
+  <!-- Panels -->
+  <g filter="url(#panelShadow)">
+    <rect x="28" y="30" width="580" height="490" rx="12" fill="#fff" stroke="#087F92" stroke-width="2"/>
+    <rect x="630" y="30" width="442" height="490" rx="12" fill="#fff" stroke="#00C6D9" stroke-width="2"/>
   </g>
 
-  <!-- Legend -->
-  <rect x="16" y="10" width="10" height="10" rx="5" fill="#00F6FF" stroke="#008DA5" stroke-width="1"/>
-  <text x="32" y="19" font-family="Inter, Helvetica, Arial, sans-serif" font-size="10" fill="#4a6b72">core</text>
-  <rect x="68" y="10" width="10" height="10" rx="5" fill="#008DA5"/>
-  <text x="84" y="19" font-family="Inter, Helvetica, Arial, sans-serif" font-size="10" fill="#4a6b72">support</text>
-
-  <!-- Col 1 Machine -->
-  <g filter="url(#softShadow)">
-    <rect x="16" y="28" width="248" height="204" rx="12" fill="#ffffff" stroke="#008DA5" stroke-width="1.5"/>
+  <!-- Core Protocol icon -->
+  <g aria-hidden="true">
+    <path d="M82 55 108 70v30l-26 15-26-15V70Z" fill="url(#coreIcon)"/>
+    <path d="m82 66 14 8-14 8-14-8Z" fill="#fff"/>
+    <path d="m67 77 13 7v16l-13-8Z" fill="#E9FCFF"/>
+    <path d="m84 84 13-7v15l-13 8Z" fill="#fff"/>
   </g>
-  <text x="30" y="50" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#008DA5" letter-spacing="0.04em">CARTESI MACHINE</text>
+  <text class="panel-title" x="128" y="94">CORE PROTOCOL</text>
 
+  <!-- Tools icon -->
+  <g aria-hidden="true">
+    <path d="M680 55 706 70v30l-26 15-26-15V70Z" fill="url(#toolIcon)"/>
+    <!-- Adapted from Heroicons' MIT-licensed wrench-screwdriver icon. -->
+    <g transform="translate(663.8 64.8) scale(1.35)">
+      <path
+        d="M11.4194 15.1694 17.25 21A2.6517 2.6517 0 0 0 21 17.25l-5.8767-5.8767m-3.7039 3.7961 2.4961-3.0311a2.385 2.385 0 0 1 1.2078-.765m-3.7039 3.7961-4.6551 5.6525A2.548 2.548 0 0 1 2.25 19.2023a2.548 2.548 0 0 1 .9281-1.9666l6.8365-5.6301m5.1087-.2323a5.154 5.154 0 0 1 1.7426-.1395c.1266.0107.2547.0162.3841.0162A4.5 4.5 0 0 0 21.3523 4.8978l-3.2761 3.2762a2.304 2.304 0 0 1-2.25-2.25l3.2762-3.2763A4.5 4.5 0 0 0 12.7662 7.1341c.0909 1.0755-.0714 2.2643-.9045 2.9504l-.1021.0841m-1.745 1.437-4.1056-4.1056H4.5L2.25 3.75 3.75 2.25 7.5 4.5v1.409l4.2596 4.2596m-1.745 1.437 1.745-1.437m6.6154 8.2064-2.625-2.625M4.8672 19.125h.0075v.0075h-.0075Z"
+        fill="none"
+        stroke="#fff"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text class="panel-title" x="726" y="94">TOOLS &amp; RESOURCES</text>
+
+  <!-- Dividers with centered notches -->
+  <path class="divider" d="M54 135H302l6 6 6-6h268" stroke="#087F92"/>
+  <path class="divider" d="M654 135h190l7 7 7-7h190" stroke="#00C6D9"/>
+
+  <!-- Core Protocol repositories -->
   <a href="https://github.com/cartesi/machine-emulator">
-    <rect x="30" y="62" width="220" height="28" rx="14" fill="#00F6FF" stroke="#008DA5" stroke-width="1.25"/>
-    <text x="140" y="81" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" font-weight="600" fill="#000">machine-emulator</text>
+    <rect x="54" y="166" width="250" height="76" rx="10" fill="url(#coreCard)" filter="url(#cardShadow)"/>
+    <text class="repo core-repo" x="179" y="204">machine-emulator</text>
   </a>
   <a href="https://github.com/cartesi/machine-solidity-step">
-    <rect x="30" y="96" width="220" height="28" rx="14" fill="#00F6FF" stroke="#008DA5" stroke-width="1.25"/>
-    <text x="140" y="115" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" font-weight="600" fill="#000">machine-solidity-step</text>
+    <rect x="330" y="166" width="252" height="76" rx="10" fill="url(#coreCard)" filter="url(#cardShadow)"/>
+    <text class="repo core-repo" x="456" y="204">machine-solidity-step</text>
   </a>
-  <a href="https://github.com/cartesi/machine-guest-tools">
-    <rect x="30" y="132" width="220" height="26" rx="13" fill="#008DA5"/>
-    <text x="140" y="150" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">machine-guest-tools</text>
-  </a>
-  <a href="https://github.com/cartesi/machine-linux-image">
-    <rect x="30" y="164" width="220" height="26" rx="13" fill="#008DA5"/>
-    <text x="140" y="182" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">machine-linux-image</text>
-  </a>
-  <a href="https://github.com/cartesi/machine-rootfs-image">
-    <rect x="30" y="196" width="220" height="26" rx="13" fill="#008DA5"/>
-    <text x="140" y="214" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">machine-rootfs-image</text>
-  </a>
-
-  <line x1="274" y1="100" x2="294" y2="100" stroke="#008DA5" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- Col 2 stack: Contracts (top) + Application (below) -->
-  <g filter="url(#softShadow)">
-    <rect x="306" y="28" width="248" height="112" rx="12" fill="#ffffff" stroke="#008DA5" stroke-width="1.5"/>
-  </g>
-  <text x="320" y="50" font-family="Inter, Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#008DA5" letter-spacing="0.03em">CONTRACTS &amp; FRAUD PROOFS</text>
-
   <a href="https://github.com/cartesi/rollups-contracts">
-    <rect x="320" y="62" width="220" height="28" rx="14" fill="#00F6FF" stroke="#008DA5" stroke-width="1.25"/>
-    <text x="430" y="81" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" font-weight="600" fill="#000">rollups-contracts</text>
+    <rect x="54" y="268" width="250" height="76" rx="10" fill="url(#coreCard)" filter="url(#cardShadow)"/>
+    <text class="repo core-repo" x="179" y="306">rollups-contracts</text>
   </a>
   <a href="https://github.com/cartesi/dave">
-    <rect x="320" y="96" width="220" height="28" rx="14" fill="#00F6FF" stroke="#008DA5" stroke-width="1.25"/>
-    <text x="430" y="115" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" font-weight="600" fill="#000">dave</text>
+    <rect x="330" y="268" width="252" height="76" rx="10" fill="url(#coreCard)" filter="url(#cardShadow)"/>
+    <text class="repo core-repo" x="456" y="306">dave</text>
   </a>
-
-  <g filter="url(#softShadow)">
-    <rect x="306" y="152" width="248" height="80" rx="12" fill="#ffffff" stroke="#008DA5" stroke-width="1.5"/>
-  </g>
-  <text x="320" y="174" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#008DA5" letter-spacing="0.04em">APPLICATION</text>
-
-  <a href="https://github.com/cartesi/honeypot">
-    <rect x="320" y="186" width="220" height="28" rx="14" fill="#008DA5"/>
-    <text x="430" y="205" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#fff">honeypot</text>
-  </a>
-
-  <line x1="564" y1="100" x2="584" y2="100" stroke="#008DA5" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- Col 3 Node -->
-  <g filter="url(#softShadow)">
-    <rect x="596" y="28" width="248" height="112" rx="12" fill="#ffffff" stroke="#008DA5" stroke-width="1.5"/>
-  </g>
-  <text x="610" y="50" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#008DA5" letter-spacing="0.04em">NODE AND SEQUENCER</text>
-
   <a href="https://github.com/cartesi/rollups-node">
-    <rect x="610" y="62" width="220" height="28" rx="14" fill="#00F6FF" stroke="#008DA5" stroke-width="1.25"/>
-    <text x="720" y="81" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" font-weight="600" fill="#000">rollups-node</text>
+    <rect x="54" y="370" width="250" height="76" rx="10" fill="url(#coreCard)" filter="url(#cardShadow)"/>
+    <text class="repo core-repo" x="179" y="408">rollups-node</text>
   </a>
   <a href="https://github.com/cartesi/sequencer">
-    <rect x="610" y="96" width="220" height="28" rx="14" fill="#00F6FF" stroke="#008DA5" stroke-width="1.25"/>
-    <text x="720" y="115" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" font-weight="600" fill="#000">sequencer</text>
+    <rect x="330" y="370" width="252" height="76" rx="10" fill="url(#coreCard)" filter="url(#cardShadow)"/>
+    <text class="repo core-repo" x="456" y="408">sequencer</text>
   </a>
 
-  <line x1="854" y1="100" x2="874" y2="100" stroke="#008DA5" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- Col 4 Docs -->
-  <g filter="url(#softShadow)">
-    <rect x="886" y="28" width="198" height="204" rx="12" fill="#ffffff" stroke="#008DA5" stroke-width="1.5"/>
-  </g>
-  <text x="900" y="50" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#008DA5" letter-spacing="0.04em">DOCS AND TOOLING</text>
-
+  <!-- Tools and Resources repositories -->
   <a href="https://github.com/cartesi/cli">
-    <rect x="900" y="62" width="170" height="28" rx="14" fill="#00F6FF" stroke="#008DA5" stroke-width="1.25"/>
-    <text x="985" y="81" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" font-weight="600" fill="#000">cli</text>
+    <rect x="654" y="166" width="394" height="54" rx="9" fill="url(#toolCard)" filter="url(#cardShadow)"/>
+    <text class="repo tool-repo" x="851" y="193">cli</text>
   </a>
   <a href="https://github.com/cartesi/docs">
-    <rect x="900" y="96" width="170" height="28" rx="14" fill="#00F6FF" stroke="#008DA5" stroke-width="1.25"/>
-    <text x="985" y="115" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" font-weight="600" fill="#000">docs</text>
-  </a>
-  <a href="https://github.com/cartesi/application-templates">
-    <rect x="900" y="132" width="170" height="26" rx="13" fill="#008DA5"/>
-    <text x="985" y="150" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#fff">application-templates</text>
+    <rect x="654" y="232" width="394" height="54" rx="9" fill="url(#toolCard)" filter="url(#cardShadow)"/>
+    <text class="repo tool-repo" x="851" y="259">docs</text>
   </a>
   <a href="https://github.com/cartesi/rollups-ts">
-    <rect x="900" y="164" width="170" height="26" rx="13" fill="#008DA5"/>
-    <text x="985" y="182" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">rollups-ts</text>
+    <rect x="654" y="298" width="394" height="54" rx="9" fill="url(#toolCard)" filter="url(#cardShadow)"/>
+    <text class="repo tool-repo" x="851" y="325">rollups-ts</text>
+  </a>
+  <a href="https://github.com/cartesi/application-templates">
+    <rect x="654" y="364" width="394" height="54" rx="9" fill="url(#toolCard)" filter="url(#cardShadow)"/>
+    <text class="repo tool-repo" x="851" y="391">application-templates</text>
   </a>
   <a href="https://github.com/cartesi/rollups-explorer">
-    <rect x="900" y="196" width="170" height="26" rx="13" fill="#008DA5"/>
-    <text x="985" y="214" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#fff">rollups-explorer</text>
+    <rect x="654" y="430" width="394" height="54" rx="9" fill="url(#toolCard)" filter="url(#cardShadow)"/>
+    <text class="repo tool-repo" x="851" y="457">rollups-explorer</text>
   </a>
 </svg>
