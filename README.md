@@ -1,6 +1,8 @@
+![Cartesi Engineering Map](./banner-2.png)
+
 # Cartesi Engineering Map
 
-[Cartesi](https://cartesi.io) enables developers to build with the languages, libraries, and tools they know and love. Application computation runs inside a deterministic RISC-V virtual machine with a full Linux runtime.
+[Cartesi](https://cartesi.io) enables appchain rollups built with the languages, libraries, and tools you know and love. It runs computation inside a deterministic RISC-V virtual machine with a full Linux runtime while retaining Ethereum’s security guarantees.
 
 This page provides a curated map of the repositories that make up and support Cartesi’s current engineering stack, with a particular focus on the **Rollups v2** architecture under active integration as of mid-2026.
 
@@ -8,7 +10,7 @@ This page provides a curated map of the repositories that make up and support Ca
 
 ## Current engineering stack
 
-Coordinated releases generally flow from the execution layer into contracts and fraud proofs, then the node, client tooling, explorer, CLI, and templates. The diagram below divides the stack into **Core Protocol** and **Tools & Resources**.
+The diagram below shows the main repositories in the stack, grouped into **Core Protocol** (what runs the stack) and **Tools & Resources** (what you use to build on it).
 
 ![Cartesi Rollups v2 engineering stack](./engineering-stack-white.png)
 
@@ -29,10 +31,10 @@ Coordinated releases generally flow from the execution layer into contracts and 
 
 ## Repository map
 
-The table below lists the repositories in the current stack, with a short purpose for each and a status label. The *Status* column describes a repository’s role in this mapped stack:
+The table below lists the repositories in the current stack, with a short purpose for each and a status label. The *Status* column is the maturity of each repository in this mapped stack:
 
-- **Production** - stable releases in production use (may still receive ongoing development)
-- **Active development** - part of the current Rollups v2 integration train; expect change until the stack stabilizes
+- **Production** - stable releases in production use
+- **Active development** - part of the current Rollups v2 integration
 - **Experimental** - prototype or research; not yet validated for broader use
 
 
