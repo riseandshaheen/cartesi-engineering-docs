@@ -27,7 +27,7 @@ Q2 2026 is reported against the three current technical priorities in the Techni
 
 **Easy Stack for Shipping Onchain in a Day.** The rollups node, SDK, explorer, and CLI moved onto a coordinated alpha release sequence. The developer surface was also extended with machine-readable documentation, Cartesi AI skill packs, and an MCP server, alongside DeFi examples demonstrating application prototypes.
 
-Q2 closed with the stack moving together. Making that progress durable and usable for operators and developers continues in Q3.
+Q2 closed with the stack aligned around coordinated releases. Q3 will focus on stabilising that progress and making it ready for broader operator and developer use.
 
 ---
 
@@ -91,7 +91,7 @@ Work in the quarter kept that experimental integration aligned with the emulator
 
 **Confirmation Latency.** The sequencer is the path for faster confirmation than waiting for L1 finality: it accepts user operations, confirms them immediately, and posts them to L1 in batches.
 
-In Q2 it became significantly more resilient. It gained the ability to recover from [stale batches](https://github.com/cartesi/sequencer/pull/12), restart from [snapshots](https://github.com/cartesi/sequencer/pull/13), [detect divergence](https://github.com/cartesi/sequencer/pull/14) independently, and [rebuild its state](https://github.com/cartesi/sequencer/pull/18) after local data loss.
+Q2 work focused on recovery after failure and independent state verification. It gained the ability to recover from [stale batches](https://github.com/cartesi/sequencer/pull/12), restart from [snapshots](https://github.com/cartesi/sequencer/pull/13), and rebuild canonical state from a trusted checkpoint with [Cockroach recovery](https://github.com/cartesi/sequencer/pull/18) when local data is lost. Independent verification uses a [watchdog](https://github.com/cartesi/sequencer/pull/14) that compares the sequencer's finalised state against the canonical Cartesi Machine at the same L1 block.
 
 These capabilities cover the main failure modes of operating a sequencer. The sequencer was tested against a reference application, and deployment tooling was established.
 
@@ -332,6 +332,6 @@ The node → SDK → explorer → CLI cluster, on an emulator `v0.20.0` base, is
 
 Documentation work in [`cartesi/docs`](https://github.com/cartesi/docs) is kept out of the GitHub activity numbers in the appendices, and the relevant work is included in Pillar 3.
 
-[Mugen-Builders](https://github.com/Mugen-Builders) work on skills and the MCP server is managed by the Developer Advocacy Unit. It is described in Pillar 3 and is not counted in Appendix A.
+[Mugen-Builders](https://github.com/Mugen-Builders) work on skills and the MCP server is managed by the Developer Advocacy Unit. It is described in Pillar 3 and is not counted in Appendices.
 
-Deployment tooling, deterministic addresses, Sepolia binaries, and operator runbooks are evidenced in the repositories reviewed. Execution of deployments to live networks is not recorded in these repositories and may live in operational systems outside GitHub.
+Execution of deployments to live networks is not recorded in these repositories and may live in operational systems outside GitHub.
