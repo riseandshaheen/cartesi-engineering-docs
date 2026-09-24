@@ -49,19 +49,25 @@ In Q2, the objective was to enable users to recover assets when an application s
 
 ### Key Q2 Deliveries
 
-**Emergency Withdrawals.** Emergency withdrawal work made it possible for users to recover funds without relying on the application operator. Claims are now staged before they take effect, account validity proofs are substantially smaller, and owner privileges are revoked when an application is foreclosed. Together, these changes make withdrawal more practical and reduce the risks around a failed application. [Claim staging](https://github.com/cartesi/rollups-contracts/pull/514), [smaller account validity proofs](https://github.com/cartesi/rollups-contracts/pull/515), and [foreclosure hardening](https://github.com/cartesi/rollups-contracts/pull/522) were completed in Q2.
+**Emergency Withdrawals.** Emergency withdrawal work made it possible for users to recover funds without relying on the application operator. Claims are now staged before they take effect, account validity proofs are substantially smaller, and owner privileges are revoked when an application is foreclosed. Together, these changes make withdrawal more practical and reduce the risks around a failed application.
 
-The work was integrated across the stack so that the contracts, node, CLI, emulator, and explorer expose the same withdrawal flow.
+[Claim staging](https://github.com/cartesi/rollups-contracts/pull/514) changes when a claim takes effect. A claim submitted by an Authority owner or a Quorum majority used to apply immediately. It is now marked staged and can be accepted only after a staging period elapses, which gives observers time to detect a fraudulent or mistaken claim before it becomes final.
 
-**Fraud-Proof System v3.** Multiple `v3.0.0-alpha` [releases](https://github.com/cartesi/dave/releases) kept the fraud-proof system aligned with the contracts it settles against. This versioning is important because the dispute mechanism and the contracts must agree on the same protocol rules for a dispute to be resolved correctly. A [PRT reentrancy issue](https://github.com/cartesi/dave/pull/259) was fixed, and the `cartesi-rollups-prt` binary was [added to the SDK](https://github.com/cartesi/cli/pull/491) so developers can use the experimental component without building it from source.
+[Smaller account validity proofs](https://github.com/cartesi/rollups-contracts/pull/515) split account validation into two steps. Each user previously supplied a full proof from their account root to the machine root. After foreclosure, the accounts-drive Merkle root is proved once against the last-finalised machine root, and each account is validated against that already-proved root. For an application supporting 2^17 accounts, the user-supplied proof drops from 59 elements to 17. The user needs the account recovery state, which is enough for a withdrawal interface to run in a browser. The first, shared proof is supplied once for the application. An event records that the accounts-drive root has been proved, so an interface can see that this step is done.
 
-**Auditing and Battle Testing.** Q2 included in-house reviews of successive node, contracts, and CLI release candidates under the current Authority/single-operator trust model. Findings were triaged and addressed internally.
+[Foreclosure hardening](https://github.com/cartesi/rollups-contracts/pull/522) disables application owner privileges when an application is foreclosed. A withdrawal-config getter was added, and the application address is passed through to `buildWithdrawalOutput`.
 
-Additional hardening covered the sequencer, emulator, node, CI, and fund-handling paths. This included formal specifications for sequencer recovery, [emulator fuzzing](https://github.com/cartesi/machine-emulator/pull/363), [HTTP](https://github.com/cartesi/rollups-node/pull/774) and CI security improvements, and fixes to claim and foreclosure behaviour. The goal was to identify failures and attack paths before these components are relied on for real funds.
+The same flow is exposed by the contracts, node, CLI, emulator, and explorer. Claim staging landed in the contracts. The node adopted the contracts 3.0.0 alpha line. The CLI exposes the staging period in its run and deploy flow. The explorer disables Send for a foreclosed application and shows the reason on the application and epoch status views.
+
+**Fraud-Proof System v3.** Multiple `v3.0.0-alpha` [releases](https://github.com/cartesi/dave/releases) kept the fraud-proof system aligned with the contracts it settles against. Settlement exposes the last finalized machine root that an emergency withdrawal proves against, and `settle` reverts when the application is foreclosed. Deployment addresses are pre-computed for every chain and published with the release. A [PRT reentrancy issue](https://github.com/cartesi/dave/pull/259) was fixed. The experimental component was [added to the SDK](https://github.com/cartesi/cli/pull/491), so it ships with the developer tools.
+
+**Auditing and Battle Testing.** Q2 included in-house reviews of successive node, contracts, and CLI release candidates under the current Authority/single-operator trust model. Coverage included the input pipeline, execution and determinism, the claim and settlement lifecycle, emergency withdrawal, asset portals, node availability, and the public query API. Findings were triaged and addressed internally.
+
+Additional hardening covered the sequencer, emulator, node, CI, and fund-handling paths. Sequencer recovery is specified in TLA+ for the optimistic and preemptive models, with a documented threat model and invariants. [Emulator fuzzing](https://github.com/cartesi/machine-emulator/pull/363) exercises the core execution environment, and the bugs it found were fixed. CI actions on the emulator, Solidity step, and Dave are pinned by digest, which binds each workflow to a specific action revision. [HTTP hardening](https://github.com/cartesi/rollups-node/pull/774) and the claim and foreclosure fixes sit on the same pass. The goal was to identify failures and attack paths before these components are relied on for real funds.
 
 ### Why it Matters
 
-These deliveries are a trust-enabling measure for live applications that hold real funds: recovery has to remain usable when the normal application workflow fails. Smaller account proofs and clearer foreclosure handling reduce the cost and confusion involved in recovering assets. Keeping fraud-proof and settlement contracts compatible is necessary for disputes to resolve against the same rules used by the application.
+These deliveries are a trust-enabling measure for live applications that hold real funds: recovery has to remain usable when the normal application workflow fails. Claim staging leaves a window in which a bad claim can be seen before it is final. The smaller account proof cuts what each user submits and makes a browser withdrawal practical. Foreclosure removes owner privileges from a failed application. Fraud-proof releases tracked the settlement contracts version for version, which is what lets a dispute resolve under the rules the application uses.
 
 ### Next Milestone
 
@@ -81,25 +87,35 @@ In Q2, the objective was to advance the execution engine the rest of the stack d
 
 ### Key Q2 Deliveries
 
-**Machine Emulator.** `machine-emulator` [v0.20.0](https://github.com/cartesi/machine-emulator/releases/tag/v0.20.0) shipped and became the base version for the Q2 development line. The quarter also added NVRAM support, expanded distribution across package managers, and introduced [fuzz testing](https://github.com/cartesi/machine-emulator/pull/363) for the emulator. The fuzzing work found and fixed bugs in the core execution environment, helping ensure that independent implementations produce the same machine state.
+**Machine Emulator.** `machine-emulator` [v0.20.0](https://github.com/cartesi/machine-emulator/releases/tag/v0.20.0) shipped and became the base version for the Q2 development line. The release replaced the Merkle tree with a faster hash tree supporting Keccak-256 and SHA-256, accelerated with SIMD and multithreading and cached on disk. Machines can keep their state fully on disk across every address range, and clone that state with reflinks or hardlinks on copy-on-write filesystems. A bulk hash API collects root hashes at configurable intervals and bundles subtrees, so a computation hash can be built over a long execution. These are the capabilities the rollups node and Dave integrate against. The `v0.21.0` test releases continued on the same line. The quarter also added [NVRAM support](https://github.com/cartesi/machine-emulator/pull/380), allowing applications to preserve their state more efficiently between inputs by reducing the overhead of synchronising state through the operating system. Distribution across package managers was expanded, and [fuzz testing](https://github.com/cartesi/machine-emulator/pull/363) was introduced for the emulator. 
 
-The [Solidity step](https://github.com/cartesi/machine-solidity-step/releases/tag/v0.14.0) and guest tools were updated alongside the emulator, keeping the components that reproduce and verify machine execution aligned.
+Emergency withdrawal needs proofs that stay valid when some inputs were rejected. Revert-root-hash accessors were added across the C, Lua, and JSON-RPC APIs. The hash is recorded in `send_cmio_response`, substituted when hashes are collected over rejected inputs, and emitted as a per-output proof from `--cmio-advance-state`, including a proof that the output-hashes root sits in the accepting state.
 
-**ZK Verification Path.** Q2 continued exploration of a zero-knowledge path for verifying Cartesi Machine state transitions, using a [RISC Zero integration](https://github.com/cartesi/machine-emulator/tree/v0.20.0/risc0) inside the machine emulator. The idea is to prove a transition off-chain and verify the proof on-chain, as an alternative to interactive fraud-proof bisection.
+The [Solidity step](https://github.com/cartesi/machine-solidity-step/releases/tag/v0.14.0) `v0.14.0` combined the interpreter checkpoint, added coverage for the step, and renamed `checkpoint-hash` to `revert-root-hash`, so the on-chain step uses the same root the emulator records. Guest tools moved through four `v0.18.0` test releases. These are the components that reproduce and verify machine execution, and they stayed aligned with the emulator.
 
-Work in the quarter kept that experimental integration aligned with the emulator rather than introducing a new proving system.
+**ZK Verification Path.** Q2 continued exploration of a zero-knowledge path for verifying Cartesi Machine state transitions, using a [RISC Zero integration](https://github.com/cartesi/machine-emulator/tree/v0.20.0/risc0) inside the machine emulator. Given a step log, the same access log used by fraud-proof bisection, the pipeline proves that the transition from `root_hash_before`, over `mcycle_count` cycles, to `root_hash_after` is valid. A freestanding RISC-V guest replays the logged step inside the zkVM and writes an ABI-encoded journal. The host prover verifies that receipt and compresses it to a Groth16 seal. `CartesiStepVerifier` submits the seal to the RISC Zero verifier and checks the journal against the expected hashes and cycle count. Interactive bisection and this path both verify the same state transition; the zk path does it in one on-chain check.
 
-**Confirmation Latency.** The sequencer is the path for faster confirmation than waiting for L1 finality: it accepts user operations, confirms them immediately, and posts them to L1 in batches.
+Q2 kept that experimental integration aligned with the emulator: dependency bumps in the Rust guest and host, a locked toolchain install in CI, and verify-API refactors shared with the rest of the emulator. The RISC Zero toolchain is documented as an optional build dependency of the official packages.
 
-Q2 work focused on recovery after failure and independent state verification. It gained the ability to recover from [stale batches](https://github.com/cartesi/sequencer/pull/12), restart from [snapshots](https://github.com/cartesi/sequencer/pull/13), and rebuild canonical state from a trusted checkpoint with [Cockroach recovery](https://github.com/cartesi/sequencer/pull/18) when local data is lost. Independent verification uses a [watchdog](https://github.com/cartesi/sequencer/pull/14) that compares the sequencer's finalised state against the canonical Cartesi Machine at the same L1 block.
+**Confirmation Latency.** The sequencer is the path for faster confirmation than waiting for L1 finality. It accepts signed user operations, confirms them immediately, and posts them to L1 in batches. The off-chain sequencer and the on-chain scheduler have to produce the same execution order, and the operator has to be able to detect and recover from failure.
 
-These capabilities cover the main failure modes of operating a sequencer. The sequencer was tested against a reference application, and deployment tooling was established.
+Recovery from [stale batches](https://github.com/cartesi/sequencer/pull/12) addresses a specific cascade. When a batch reaches L1 too late, the scheduler skips it. That skip poisons the nonce counter, and every later batch becomes unreachable. The sequencer detects the approach of that window, goes offline, flushes the L1 mempool so a delayed submission cannot land afterwards, and cascade-invalidates the doomed chain. TLA+ specifications for the optimistic and preemptive recovery models are part of the design.
+
+Restart from [snapshots](https://github.com/cartesi/sequencer/pull/13) dumps application state when a batch closes, promotes the dump to finalised when L1 confirms it, and garbage-collects older dumps. At startup the sequencer loads the latest snapshot and replays the persisted transaction stream from that offset. The watchdog and Cockroach recovery both read these snapshots.
+
+[Cockroach recovery](https://github.com/cartesi/sequencer/pull/18) covers a lost or irrecoverably diverged local database, when there is no batch tree left to repair. The operator wipes the data directory and rebuilds canonical state from a trusted checkpoint by folding L1 forward. The fold runs the same scheduler source compiled into the on-chain machine, so the rebuild follows L1.
+
+The [watchdog](https://github.com/cartesi/sequencer/pull/14) is an independent process. It reads the sequencer's finalised state and compares it with the canonical Cartesi Machine at the same L1 inclusion block. On the reference application that comparison uses the machine's `inspect` output. A mismatch produces a structured event and exits. The process does not retry, because a deterministic mismatch is a settled divergence. The check recomputes state from the canonical machine. The watchdog image is published to GHCR and Docker Hub, versioned to the sequencer release, so operators deploy a matched bundle.
+
+Soft confirmations are an optimistic prediction. Divergence becomes visible when the offending batch reaches L1 safe finality, a window of about two epochs. Confirmations issued inside that window can rest on state that has already diverged. That bound belongs to the optimistic model.
+
+These capabilities cover the main failure modes of operating a sequencer. The sequencer was tested against a reference wallet application. Deployment tooling and an operator runbook cover staging, recovery, the threat model, and invariants.
 
 ### Why it Matters
 
-The Machine Emulator is the execution foundation for the Rollups stack. Improving its performance makes complex application logic more practical to run while keeping execution verifiable and aligned across the stack.
+The Machine Emulator is the execution foundation for the Rollups stack. Fuzzing and the shared revert-root hash keep independent implementations and the on-chain step on the same machine state. Improving execution efficiency makes complex application logic more practical to run while keeping it verifiable and aligned across the stack.
 
-The sequencer provides fast soft confirmations ahead of fraud-proof settlement, reducing confirmation latency for trading and other responsive applications. Q2's resilience work helps make this faster confirmation path reliable in practice.
+The sequencer provides fast soft confirmations ahead of fraud-proof settlement, reducing confirmation latency for trading and other responsive applications. Recovery from stale batches, restart from snapshots, the watchdog, and Cockroach rebuild are what make that faster path operable after failure. Confirmations stay optimistic until the batch reaches L1 safe finality.
 
 ### Next Milestone
 
@@ -117,23 +133,33 @@ In Q2, the objective was to ship the rollups node, SDK, explorer, and CLI as a c
 
 ### Key Q2 Deliveries
 
-**Rollups Node v2.** `rollups-node` absorbed the [contracts v3 alpha line](https://github.com/cartesi/rollups-node/pull/779) and shipped `[v2.0.0-alpha.12](https://github.com/cartesi/rollups-node/releases/tag/v2.0.0-alpha.12)`, providing the integration point for the rest of the stack. The node also received security and reliability improvements, including [HTTP hardening](https://github.com/cartesi/rollups-node/pull/774), a more resilient [EVM reader](https://github.com/cartesi/rollups-node/pull/781), and faster [integration testing](https://github.com/cartesi/rollups-node/pull/784). These changes reduced the friction and risk of coordinating releases across components.
+**Rollups Node v2.** `rollups-node` absorbed the [contracts v3 alpha line](https://github.com/cartesi/rollups-node/pull/779) and shipped [v2.0.0-alpha.12](https://github.com/cartesi/rollups-node/releases/tag/v2.0.0-alpha.12) on emulator v0.20.0. That release is the integration point for the rest of the stack. The SDK, explorer, and CLI then followed in that order, each consuming the release before it. Authority, Quorum, and PRT applications can be foreclosed so users withdraw from the proved accounts drive. The node records foreclosure, drive-proof, and withdrawal events and serves them over JSON-RPC. A foreclosed PRT application drains unfinished epochs to a terminal state.
 
-**CLI 2.0 and Rollups Explorer.** The CLI added support for the new [emergency-withdrawal flow](https://github.com/cartesi/cli/pull/486) and other deployment workflows, while the explorer added version checks, [testing infrastructure](https://github.com/cartesi/rollups-explorer/pull/454), and improved handling of [archived chain data](https://github.com/cartesi/rollups-explorer-api/pull/63). Supporting TypeScript packages and application templates were updated alongside the releases.
+The node also received security and reliability improvements. The [EVM reader](https://github.com/cartesi/rollups-node/pull/781) now polls for blocks. Under WebSocket notifications, a block that took longer to process than the block time left a queue of stale notifications, and the reader worked through them one by one. Polling reads the latest block and clears that backlog. `[rollups-ts](https://github.com/cartesi/rollups-ts)` updated its RPC types against the upcoming node API, so the TypeScript clients were ready when `alpha.12` shipped.
 
-**Agentic Development.** Cartesi [documentation](https://docs.cartesi.io/cartesi-rollups/2.0/build-with-ai/overview/) became easier for AI coding agents to consume, with machine-readable versions of every page, and structured documentation indexes. `[cartesi-skills](https://github.com/Mugen-Builders/cartesi-skills)` added reusable skill packs covering the main stages of Cartesi development, while an [MCP server](https://github.com/Mugen-Builders/MCP-Server) made documentation and development tools accessible through the Model Context Protocol.
+**CLI 2.0 and Rollups Explorer.** The CLI added support for the new [emergency-withdrawal flow](https://github.com/cartesi/cli/pull/486): a claim staging period in run and deploy, withdrawal configuration setup, and deployment of the withdrawal output builder on devnet. Deployment addresses are chain-independent and shipped as artifacts, so the same contract sits at the same address on every chain. Other deployment workflows moved with the node `alpha.12` release.
 
-The goal is to give developers and coding agents a consistent source of Cartesi-specific knowledge and workflows, rather than requiring them to piece together information from documentation, repositories, and configuration files.
+The explorer added foreclosure state on the application and epoch views. Sending inputs is disabled for [foreclosed applications](https://github.com/cartesi/rollups-explorer/pull/466), and the interface states the reason.
 
-**Demo DeFi Implementations.** A set of DeFi demos and tutorials showed how the Linux-based Cartesi Machine can be applied to familiar onchain use cases, including [liquidity management](https://github.com/Mugen-Builders/cartesi-uniswap-integration), [data processing](https://github.com/Mugen-Builders/pandas-example), lending risk, token issuance, price feeds, and [combinatorial markets](https://x.com/cartesiproject/status/2069410399909564883).
+**Agentic Development.** Cartesi [documentation](https://docs.cartesi.io/cartesi-rollups/2.0/build-with-ai/overview/) became easier for AI coding agents to consume. The site serves `llms.txt` and `llms-full.txt` indexes, a `.md` URL for every page. The Build with AI section adds a copy-page action, a spec-driven development prompt, and setup notes for Codex, Claude Desktop, and VS Code.
 
-These examples provide working references for developers evaluating what can be built with Cartesi, while also exercising the stack against applications beyond basic tutorials.
+`[cartesi-skills](https://github.com/Mugen-Builders/cartesi-skills)` `v0.1.0` added eleven skill packs: scaffolding, backend core with separate Python and JS/TS variants, contracts, frontend, local development, deployment, JSON-RPC, and debugging, plus a workflow pack that routes an agent to the right pack. Each pack is pinned to explicit versions and was later updated for the contracts v3 lifecycle and node `alpha.12`.
+
+An [MCP server](https://github.com/Mugen-Builders/MCP-Server) exposes that material through the Model Context Protocol. It serves skills and article bodies directly to the agent, with deposit-instruction tools for ETH, ERC-20, ERC-721, and ERC-1155, a configurable depositor wallet, and search that answers natural-language queries. An admin interface maintains articles and skills as the SDK changes.
+
+The goal is to give developers and coding agents a consistent source of Cartesi-specific knowledge and workflows, drawn from the documentation, the skill packs, and the MCP server.
+
+**Demo DeFi Implementations.** A set of DeFi demos and tutorials showed how the Linux-based Cartesi Machine can run familiar onchain workloads in ordinary languages.
+
+[Liquidity management](https://github.com/Mugen-Builders/cartesi-uniswap-integration) uses a vault contract that turns idle deposits into active Uniswap liquidity, run end to end on Base Sepolia. [Data processing](https://github.com/Mugen-Builders/pandas-example) runs Pandas over application state inside the machine. Companion examples cover a [NumPy risk model](https://x.com/cartesiproject/status/2055273057129058719) for lending and borrowing positions, a [bonding curve](https://x.com/cartesiproject/status/2060346474551185423) for token issuance, a [Chainlink price feed](https://x.com/riseandshaheen/status/2047247344828395616) wired into an application, and [financial modeling](https://x.com/joaopdgarcia/status/2067601502110179709) such as Black-Scholes and Monte Carlo simulation. [Combinatorial markets](https://x.com/cartesiproject/status/2069410399909564883) run deterministic probabilistic inference so correlated outcomes are priced as one market.
+
+These examples provide working references for developers evaluating what can be built with Cartesi, and they exercise the stack on applications past the basic tutorials.
 
 ### Why it Matters
 
-A developer building a rollup application should not have to create the infrastructure around it. The rollups node, CLI, explorer, and clients are already there as a set of tools, so the developer can focus on application logic.
+A developer building a rollup application should not have to create the infrastructure around it. The rollups node, CLI, explorer, and clients ship as one compatible alpha set, in dependency order from node `alpha.12` through the SDK, explorer, and CLI, so the developer can focus on application logic.
 
-Agent-readable documentation and AI tooling aid the developer experience by enabling developers to use mainstream AI coding agents to build Cartesi applications.
+Agent-readable documentation, version-pinned skill packs, and the MCP server give coding agents the procedures and API surface those releases shipped.
 
 ### Next Milestone
 
@@ -330,7 +356,9 @@ The node → SDK → explorer → CLI cluster, on an emulator `v0.20.0` base, is
 
 ## Scope limitations
 
-Documentation work in [`cartesi/docs`](https://github.com/cartesi/docs) is kept out of the GitHub activity numbers in the appendices, and the relevant work is included in Pillar 3.
+Documentation work in `[cartesi/docs](https://github.com/cartesi/docs)` is kept out of the GitHub activity numbers in the appendices, and the relevant work is included in Pillar 3.
+
+Some releases tagged in this quarter include work from pull requests merged in a previous quarter. Those pull requests are not included in the GitHub activity numbers or the delivery ledger. The release tag is counted when it falls inside the window.
 
 [Mugen-Builders](https://github.com/Mugen-Builders) work on skills and the MCP server is managed by the Developer Advocacy Unit. It is described in Pillar 3 and is not counted in Appendices.
 
