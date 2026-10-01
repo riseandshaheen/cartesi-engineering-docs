@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="168" viewBox="0 0 1100 168" role="img" aria-labelledby="title desc">
+  <title id="title">Q3 2026 GitHub activity</title>
+  <desc id="desc">130 merged pull requests, approximately 670 commits, 58 release tags, 13 repositories reviewed.</desc>
+  <defs>
+    <style>
+      .num {
+        font: 700 52px Inter, Helvetica, Arial, sans-serif;
+        fill: #087F92;
+        text-anchor: middle;
+      }
+      .lbl {
+        font: 600 14px Inter, Helvetica, Arial, sans-serif;
+        fill: #123E50;
+        letter-spacing: 0.03em;
+        text-anchor: middle;
+      }
+    </style>
+  </defs>
+
+  <rect width="1100" height="168" fill="#fff"/>
+  <rect x="8" y="8" width="1084" height="152" rx="12" fill="#fff" stroke="#00C6D9" stroke-width="2"/>
+
+  <line x1="275" y1="40" x2="275" y2="128" stroke="#00C6D9" stroke-width="1.5"/>
+  <line x1="550" y1="40" x2="550" y2="128" stroke="#00C6D9" stroke-width="1.5"/>
+  <line x1="825" y1="40" x2="825" y2="128" stroke="#00C6D9" stroke-width="1.5"/>
+
+  <text class="num" x="137.5" y="88">130</text>
+  <text class="lbl" x="137.5" y="118">merged pull requests</text>
+
+  <text class="num" x="412.5" y="88">~670</text>
+  <text class="lbl" x="412.5" y="118">commits</text>
+
+  <text class="num" x="687.5" y="88">58</text>
+  <text class="lbl" x="687.5" y="118">release tags</text>
+
+  <text class="num" x="962.5" y="88">13</text>
+  <text class="lbl" x="962.5" y="118">repositories reviewed</text>
+</svg>

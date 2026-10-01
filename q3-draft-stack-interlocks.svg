@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="716" viewBox="0 0 1100 716" role="img" aria-labelledby="title desc">
+  <title id="title">How the Cartesi stack interlocks in Q3 2026</title>
+  <desc id="desc">Machine guest tools v0.18.0, emulator v0.21.0 and Solidity step v0.15.0 released together. Rollups-contracts v3.0.0-alpha.7 to alpha.10 build on the Solidity step: alpha.7 on its test tag and alpha.8 onward on v0.15.0. Dave v3.0.0-alpha.4 and alpha.5 build on Solidity step v0.15.0 and on rollups-contracts v3.0.0-alpha.10. The TypeScript libraries released against emulator v0.21.0 and contracts alpha.9 and alpha.10. The sequencer released alpha.8 and alpha.9 on emulator v0.20.0; alpha.8 used contracts 2.2.0 and alpha.9 moved to contracts 3.0.0-alpha.6. The rollups node integrated emulator v0.21.0 on its development branch ahead of its next release, and its move to the new contracts and Dave releases is in an open pull request. The CLI and explorer build on that node release; the CLI move to Dave alpha.5 is in a draft pull request, and the application templates use guest tools v0.18.0. Solid boxes and arrows are released in Q3; dashed boxes and arrows are merged or in progress ahead of release.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0.6 L7.5 4 L0 7.4 z" fill="#087F92"/>
+    </marker>
+    <style>
+      .name {
+        font: 600 13px "Plus Jakarta Sans", Inter, Helvetica, Arial, sans-serif;
+        text-anchor: middle;
+      }
+      .ver {
+        font: 400 11px Inter, Helvetica, Arial, sans-serif;
+        text-anchor: middle;
+      }
+      .note {
+        font: italic 400 10.5px Inter, Helvetica, Arial, sans-serif;
+        text-anchor: middle;
+      }
+      .leg {
+        font: 400 11.5px Inter, Helvetica, Arial, sans-serif;
+      }
+      .rel {
+        fill: #F0F7F9;
+        stroke: #008DA5;
+        stroke-width: 1.5;
+      }
+      .unrel {
+        fill: #FFFFFF;
+        stroke: #008DA5;
+        stroke-width: 1.5;
+        stroke-dasharray: 6 4;
+      }
+      .dep {
+        fill: none;
+        stroke: #087F92;
+        stroke-width: 1.55;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .dev {
+        fill: none;
+        stroke: #087F92;
+        stroke-width: 1.55;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 5 4;
+      }
+      .halo {
+        fill: none;
+        stroke: #FFFFFF;
+        stroke-width: 7;
+      }
+    </style>
+  </defs>
+  <rect width="1100" height="716" fill="#FFFFFF"/>
+
+  <!-- Released dependencies (solid) -->
+  <path class="dep" d="M 250.0 72.0 L 280.0 72.0" marker-end="url(#arrow)"/>
+  <path class="dep" d="M 510.0 72.0 L 540.0 72.0" marker-end="url(#arrow)"/>
+  <path class="dep" d="M 650.0 100.0 L 650.0 250.0" marker-end="url(#arrow)"/>
+  <path class="dep" d="M 510.0 278.0 L 540.0 278.0" marker-end="url(#arrow)"/>
+  <path class="dep" d="M 280.0 292.0 L 252.0 292.0 L 252.0 508.0 L 280.0 508.0" marker-end="url(#arrow)"/>
+  <path class="dep" d="M 540.0 92.0 L 525.0 92.0 L 525.0 264.0 L 510.0 264.0" marker-end="url(#arrow)"/>
+  <path class="dep" d="M 290.0 100.0 L 290.0 118.0 L 240.0 118.0 L 240.0 522.0 L 280.0 522.0" marker-end="url(#arrow)"/>
+
+  <!-- Development-branch or open-PR dependencies (dashed) -->
+  <path class="halo" d="M 265.0 100.0 L 265.0 384.0"/>
+  <path class="dev" d="M 280.0 86.0 L 265.0 86.0 L 265.0 397.0 L 280.0 397.0" marker-end="url(#arrow)"/>
+  <path class="dev" d="M 395.0 306.0 L 395.0 362.0" marker-end="url(#arrow)"/>
+  <path class="dev" d="M 650.0 306.0 L 650.0 362.0" marker-end="url(#arrow)"/>
+  <path class="dev" d="M 760.0 397.0 L 800.0 397.0" marker-end="url(#arrow)"/>
+  <path class="dev" d="M 395.0 432.0 L 395.0 480.0" marker-end="url(#arrow)"/>
+  <path class="dev" d="M 910.0 432.0 L 910.0 480.0" marker-end="url(#arrow)"/>
+  <path class="dev" d="M 760.0 278.0 L 910.0 278.0 L 910.0 362.0" marker-end="url(#arrow)"/>
+  <path class="dev" d="M 145.0 44.0 L 145.0 24.0 L 1050.0 24.0 L 1050.0 508.0 L 1020.0 508.0" marker-end="url(#arrow)"/>
+  <path class="dev" d="M 395.0 536.0 L 395.0 590.0" marker-end="url(#arrow)"/>
+  <path class="dev" d="M 650.0 536.0 L 650.0 590.0" marker-end="url(#arrow)"/>
+
+  <!-- Row 1: Cartesi Machine (released) -->
+  <rect class="rel" x="40" y="44" width="210" height="56" rx="8"/>
+  <text class="name" x="145.0" y="69" fill="#123E50">machine-guest-tools</text>
+  <text class="ver" x="145.0" y="87" fill="#5B7C86">v0.18.0-test5..8 / v0.18.0</text>
+  <rect class="rel" x="280" y="44" width="230" height="56" rx="8"/>
+  <text class="name" x="395.0" y="69" fill="#123E50">machine-emulator</text>
+  <text class="ver" x="395.0" y="87" fill="#5B7C86">v0.21.0-test4..8 / v0.21.0</text>
+  <rect class="rel" x="540" y="44" width="220" height="56" rx="8"/>
+  <text class="name" x="650.0" y="69" fill="#123E50">machine-solidity-step</text>
+  <text class="ver" x="650.0" y="87" fill="#5B7C86">v0.15.0-test1..2 / v0.15.0</text>
+
+  <!-- Row 2: sequencer (released, own track) -->
+  <rect class="rel" x="280" y="136" width="230" height="82" rx="8"/>
+  <text class="name" x="395.0" y="159" fill="#123E50">sequencer</text>
+  <text class="ver" x="395.0" y="177" fill="#5B7C86">v0.1.0-alpha.8 / alpha.9</text>
+  <text class="note" x="395.0" y="194" fill="#5B7C86">on emulator v0.20.0</text>
+  <text class="note" x="395.0" y="209" fill="#5B7C86">contracts 2.2.0 → 3.0.0-alpha.6</text>
+
+  <!-- Row 3: settlement and fraud proofs (released) -->
+  <rect class="rel" x="280" y="250" width="230" height="56" rx="8"/>
+  <text class="name" x="395.0" y="275" fill="#123E50">rollups-contracts</text>
+  <text class="ver" x="395.0" y="293" fill="#5B7C86">v3.0.0-alpha.7..10</text>
+  <rect class="rel" x="540" y="250" width="220" height="56" rx="8"/>
+  <text class="name" x="650.0" y="275" fill="#123E50">dave</text>
+  <text class="ver" x="650.0" y="293" fill="#5B7C86">v3.0.0-alpha.4 / alpha.5</text>
+
+  <!-- Row 4: node and CLI (merged, ahead of release) -->
+  <rect class="unrel" x="280" y="362" width="480" height="70" rx="8"/>
+  <text class="name" x="520.0" y="385" fill="#123E50">rollups-node</text>
+  <text class="ver" x="520.0" y="403" fill="#5B7C86">next release in preparation (latest v2.0.0-alpha.12)</text>
+  <text class="note" x="520.0" y="420" fill="#5B7C86">next/2.0 on emulator v0.21.0; open #798 moves to contracts alpha.10, Dave alpha.5</text>
+  <rect class="unrel" x="800" y="362" width="220" height="70" rx="8"/>
+  <text class="name" x="910.0" y="385" fill="#123E50">cli</text>
+  <text class="ver" x="910.0" y="403" fill="#5B7C86">release follows the node</text>
+  <text class="note" x="910.0" y="420" fill="#5B7C86">latest 2.0.0-alpha.35</text>
+
+  <!-- Row 5: clients, explorer API, templates -->
+  <rect class="rel" x="280" y="480" width="230" height="56" rx="8"/>
+  <text class="name" x="395.0" y="505" fill="#123E50">rollups-ts</text>
+  <text class="ver" x="395.0" y="523" fill="#5B7C86">33 alpha package versions</text>
+  <rect class="rel" x="540" y="480" width="220" height="56" rx="8"/>
+  <text class="name" x="650.0" y="505" fill="#123E50">rollups-explorer-api</text>
+  <text class="ver" x="650.0" y="523" fill="#5B7C86">v1.1.2</text>
+  <rect class="unrel" x="800" y="480" width="220" height="56" rx="8"/>
+  <text class="name" x="910.0" y="505" fill="#123E50">application-templates</text>
+  <text class="ver" x="910.0" y="523" fill="#5B7C86">on guest tools v0.18.0</text>
+
+  <!-- Row 6: explorer (merged, ahead of release) -->
+  <rect class="unrel" x="280" y="590" width="480" height="56" rx="8"/>
+  <text class="name" x="520.0" y="615" fill="#123E50">rollups-explorer</text>
+  <text class="ver" x="520.0" y="633" fill="#5B7C86">latest v2.0.0-alpha.3; main uses the new rollups-ts packages</text>
+
+  <!-- Legend -->
+  <rect class="rel" x="40" y="672" width="36" height="20" rx="4"/>
+  <text class="leg" x="86" y="686" fill="#123E50">released in Q3</text>
+  <rect class="unrel" x="210" y="672" width="36" height="20" rx="4"/>
+  <text class="leg" x="256" y="686" fill="#123E50">merged, ahead of release</text>
+  <path class="dep" d="M 440.0 682.0 L 478.0 682.0" marker-end="url(#arrow)"/>
+  <text class="leg" x="490" y="686" fill="#123E50">dependency in a Q3 release</text>
+  <path class="dev" d="M 690.0 682.0 L 728.0 682.0" marker-end="url(#arrow)"/>
+  <text class="leg" x="740" y="686" fill="#123E50">dependency on a development branch or open PR</text>
+</svg>
