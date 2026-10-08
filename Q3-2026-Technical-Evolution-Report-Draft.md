@@ -24,9 +24,9 @@
 
 Q3 2026 is reported against the three current technical priorities in the Technical Evolution Plan. The quarter released Cartesi Machine v0.21.0 and moved settlement and fraud proofs onto it.
 
-**Safe Infrastructure for Real Money.** Deposit refunds complete emergency withdrawal at the contract layer, and a claim must now prove that the machine accepted its last input before it can be finalized. The Fraud-Proof System v3 gained claim staging, hardened bond recovery and a prototype validator node, and continues on its alpha track.
+**Safe Infrastructure for Real Money.** Deposit refunds complete emergency withdrawal at the contract layer, and a claim must now prove that the machine has finished its epoch normally before it can be finalized. The Fraud-Proof System v3 gained claim staging, hardened bond recovery and its first operational validator, the Sling node, and continues on its alpha track.
 
-**Economical Computation at Scale.** In Cartesi Machine v0.21.0, every input ends in a provable outcome, and applications can keep state in persistent memory (NVRAM) across inputs. The sequencer released a fee oracle and merged fail-stop handling, and is progressing through testing toward a live testnet.
+**Economical Computation at Scale.** In Cartesi Machine v0.21.0, every input ends in a provable outcome, even in the event of exceptions or app malfunction, and applications can keep state in persistent memory (NVRAM) across inputs. The sequencer released a fee oracle and merged fail-stop handling, and is progressing through testing toward a live testnet.
 
 **Easy Stack for Shipping Onchain in a Day.** The rollups node moved to emulator v0.21 on its development branch and laid the groundwork for a second fraud-proof validator. The TypeScript libraries were restructured and published as alpha packages, including Node.js and browser bindings for the Cartesi Machine. 
 
@@ -70,7 +70,7 @@ In Q3, the objective was to extend recovery to deposits that were not yet proces
 
 An internal review of the PRT dispute game hardened bond recovery ([#273](https://github.com/cartesi/dave/pull/273), [#274](https://github.com/cartesi/dave/pull/274)): anyone can trigger it, the winner receives its bond plus 10% of the surplus, and the rest is burned so losing Sybil bonds cannot be recycled.
 
-**Validator Diversity.** PRT is being built toward two independent validator implementations. The [Sling node](https://github.com/cartesi/dave/pull/272), released as a prototype, rewrites Dave's Rust validator around one engine for both input execution and dispute recomputation, which were previously separate implementations that could diverge, and [runs on emulator v0.21.0](https://github.com/cartesi/dave/pull/276). The Go rollups node is being prepared as the second validator: [deterministic input outcomes](https://github.com/cartesi/rollups-node/pull/794) and the [state proofs](https://github.com/cartesi/rollups-node/pull/795) the new claim format requires are merged on its development branch, and dispute participation is in progress in [#798](https://github.com/cartesi/rollups-node/pull/798).
+**Validator Diversity.** PRT is being built toward two independent validator implementations. The [Sling node](https://github.com/cartesi/dave/pull/272) is the first operational PRT validator, now in testing and hardening on its way to production status. It rewrites Dave's Rust validator around one engine for both input execution and dispute recomputation, which were previously separate implementations that could diverge, and [runs on emulator v0.21.0](https://github.com/cartesi/dave/pull/276). The Go rollups node is being prepared as the second validator: [deterministic input outcomes](https://github.com/cartesi/rollups-node/pull/794) and the [state proofs](https://github.com/cartesi/rollups-node/pull/795) the new claim format requires are merged on its development branch, and dispute participation is in progress in [#798](https://github.com/cartesi/rollups-node/pull/798).
 
 **Auditing and Battle Testing.** Q3 security assurance combined internal reviews, agentic (AI-assisted) validation, and hands-on QA. The AI-assisted work used frontier models from OpenAI (GPT-5.6 Sol and GPT-6 Astra) and Anthropic (Claude Opus 4.8 and 5.5, Sonnet 5, and Fable 5.1), on Codex Pro and Claude Max. The team validated the dave sling node (the PRT fraud-proof validator) and extended the test catalog of the v3 rollups contracts and v2 reference node, covering the foreclosure lifecycle, deposit refunds, and the machine validity proof. Most of the surfaced findings have already been fixed and re-verified; the remaining items have been forwarded to the protocol team and are being worked through ahead of the fraud-proof system leaving alpha.
 
@@ -80,9 +80,9 @@ With refunds, a foreclosed application no longer strands deposits that arrived a
 
 ### Next Milestone
 
-The next milestone for **Emergency Withdrawals** is end-to-end availability of **deposit refunds**: the node update in #798, followed by CLI and explorer support and refund documentation.
+The next milestone for **Emergency Withdrawals** is end-to-end availability of **deposit refunds**: the node update in [#798](https://github.com/cartesi/rollups-node/pull/798), followed by CLI and explorer support and refund documentation.
 
-The next step for the **Fraud-Proof System v3** is leaving alpha, which includes resolving the internal QA findings on the Sling node. Its integration with the rollups node is in #798, and support in the TypeScript clients, CLI and explorer is in open pull requests. PRT targets Ethereum today, with other chains experimental. A delay-only safety gate for L2BEAT Stage 1 deployments is proposed in [dave #271](https://github.com/cartesi/dave/pull/271). For **validator diversity**, the next step is for the Go node to respond to disputes as well as observe them.
+The next step for the **Fraud-Proof System v3** is leaving alpha, which includes resolving the internal QA findings on the Sling node. Its integration with the rollups node is in [#798](https://github.com/cartesi/rollups-node/pull/798), and support in the TypeScript clients, CLI and explorer is in open pull requests. PRT targets Ethereum today, with other chains experimental. A delay-only safety gate for L2BEAT Stage 1 deployments is proposed in [dave #271](https://github.com/cartesi/dave/pull/271). For **validator diversity**, the next step is for the Go node to respond to disputes as well as observe them.
 
 Battle testing continues through a local PRT lab that runs honest Sling nodes against scripted fraudulent players.
 
@@ -104,7 +104,7 @@ In Q3, the objective was to establish the next machine version for the stack to 
 
 **Machine Emulator.** `machine-emulator` [v0.21.0](https://github.com/cartesi/machine-emulator/releases/tag/v0.21.0) shipped with matching releases of the [Solidity step v0.15.0](https://github.com/cartesi/machine-solidity-step/releases/tag/v0.15.0), [guest tools v0.18.0](https://github.com/cartesi/machine-guest-tools/releases/tag/v0.18.0) and the [Linux image](https://github.com/cartesi/machine-linux-image/releases/tag/v0.21.0), delivering the Q2 milestone of the next machine version. Its [documentation](https://github.com/cartesi/machine-emulator/blob/v0.21.0/doc/README.md) now explains how the emulator is used in the fraud-proof verification game, with runnable examples.
 
-The release makes every input end in a provable outcome:
+The release makes every input end in a provable outcome, even in the event of exceptions or app malfunction:
 
 - **Revert on reject.** When the guest rejects an input, the valid state is the state before that input. The emulator ([#389](https://github.com/cartesi/machine-emulator/pull/389)) and the on-chain step ([#98](https://github.com/cartesi/machine-solidity-step/pull/98)) now both apply this rule.
 - **Cycle limits.** An input that exhausts its cycle budget stops in a fixed, provable state, with the same rule off chain ([#394](https://github.com/cartesi/machine-emulator/pull/394)) and on chain ([#100](https://github.com/cartesi/machine-solidity-step/pull/100)).
